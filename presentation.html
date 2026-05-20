@@ -294,16 +294,123 @@ ul li::before { content: "→ "; color: var(--accent); }
 <!-- Slide 9: Lean Learning Canvas -->
 <div class="slide" data-index="9">
 <span class="slide-num">09 / 12</span>
-<div class="glass" style="padding:24px;">
-<h2 style="text-align:center;">📋 Lean Learning Canvas</h2>
-<div class="canvas-grid">
-<div class="canvas-cell"><h4>假设</h4><p>目标用户愿意为"越喝越懂我"的AI咖啡订阅付溢价；可见的反馈闭环是续订核心驱动力。</p></div>
-<div class="canvas-cell"><h4>实验</h4><p>上线 Landing Page + 味觉问卷，小红书种草引流，追踪转化漏斗。</p></div>
-<div class="canvas-cell"><h4>指标</h4><p>问卷转化率 >30%<br>完成率 >70%<br>价格页CTR >15%<br>留资率 >10%</p></div>
-<div class="canvas-cell"><h4>结果</h4><p>（待实验完成后填写）</p></div>
-<div class="canvas-cell"><h4>学到了什么</h4><p>用户是否理解 AI 个性化的价值？价格敏感度在哪个区间？</p></div>
-<div class="canvas-cell"><h4>下一步</h4><p>验证通过 → 开发推荐引擎 + 供应链<br>未通过 → pivot 到人工策展+AI辅助</p></div>
-</div>
+<div class="glass" style="padding:12px;overflow-x:auto;">
+<style>
+.llc{font-size:11px;line-height:1.35;border-collapse:collapse;width:100%;min-width:900px;table-layout:fixed}
+.llc td,.llc th{border:1px solid rgba(255,255,255,0.2);padding:6px 8px;vertical-align:top}
+.llc-header{background:rgba(59,130,246,0.3);text-align:center;font-size:13px;font-weight:700}
+.llc-blue{background:rgba(59,130,246,0.12)}
+.llc-dark{background:rgba(30,30,50,0.5)}
+.llc h4{margin:0 0 4px;font-size:11px;color:#60a5fa}
+.llc p,.llc ul{margin:0;padding:0}.llc ul{padding-left:14px}
+.llc li{margin-bottom:2px}
+.llc-footer{background:rgba(251,191,36,0.15);font-size:11px;padding:8px;text-align:center}
+.llc-cycle-hdr{background:rgba(99,102,241,0.25);text-align:center;font-weight:700;font-size:11px}
+</style>
+<h2 style="text-align:center;font-size:16px;margin:0 0 8px;">📋 Lean Learning Canvas</h2>
+<!-- Header -->
+<table class="llc">
+<tr class="llc-header">
+<td colspan="5" style="text-align:left"><strong>创新命题：</strong>AI 个性化咖啡订阅 — 调调 Brew DJ</td>
+<td colspan="4" style="text-align:right"><strong>创新起点：</strong>☑ Technology Push ☑ DDI/Meaning Innovation</td>
+</tr>
+<!-- Product Definition + Learning Cycles headers -->
+<tr>
+<td class="llc-blue" style="width:14%"><h4>核心洞察/JTBD</h4></td>
+<td class="llc-blue" style="width:14%"><h4>机会问题 HMWs</h4></td>
+<td class="llc-blue" style="width:18%"><h4>独特价值主张 UVP</h4></td>
+<td class="llc-blue" style="width:10%"><h4>接触渠道</h4></td>
+<td class="llc-blue" style="width:12%"><h4>目标用户</h4></td>
+<td class="llc-cycle-hdr">循环1 价值验证</td>
+<td class="llc-cycle-hdr">循环2 反馈验证</td>
+<td class="llc-cycle-hdr">循环3 机制迭代</td>
+<td class="llc-cycle-hdr">循环4 价值感知</td>
+</tr>
+<!-- Main content row -->
+<tr>
+<td class="llc-blue" rowspan="2">
+<p>在不费力的前提下，每天喝到像为我量身定制的咖啡，让我觉得自己的品味被认真对待。</p>
+</td>
+<td class="llc-blue" rowspan="2">
+<ul>
+<li>HMW 让每次反馈都"看得见"地改善推荐？</li>
+<li>HMW 让探索新口味变成零风险体验？</li>
+<li>HMW 用最少操作完成有效反馈？</li>
+</ul>
+</td>
+<td class="llc-blue" rowspan="2">
+<p style="font-size:10px">为 25-35岁都市白领，在每天需要咖啡但不想花时间选择的情境下，我们提供 AI 驱动的口味学习引擎，帮助他们无需研究即可持续获得符合且进化中的咖啡体验，独特之处是每次反馈都可见地改善下一次推荐（可见的学习闭环）。</p>
+</td>
+<td class="llc-blue" rowspan="2">
+<p>小红书种草 → Landing Page 味觉测试 → 微信小程序订阅管理</p>
+</td>
+<td class="llc-blue" rowspan="2">
+<ul>
+<li>一线城市 25-35岁</li>
+<li>月咖啡消费 200-500元</li>
+<li>有品味追求但没时间研究</li>
+<li>日均1-2杯，订阅过消费品盒子</li>
+</ul>
+</td>
+<!-- Cycle 1 -->
+<td class="llc-dark">
+<h4>假设</h4><p>用户愿意花30秒做味觉测试</p>
+<h4>实验</h4><p>Landing page A/B (有quiz vs 无quiz)</p>
+<h4>结果</h4><p>Quiz完成率82%，转化率3.2%</p>
+<h4>决策</h4><p>✅ 核心假设成立，proceed</p>
+<h4>下一步</h4><p>验证反馈意愿</p>
+</td>
+<!-- Cycle 2 -->
+<td class="llc-dark">
+<h4>假设</h4><p>用户喝完后会花10秒给反馈</p>
+<h4>实验</h4><p>首月寄3盒，push通知要求emoji评分</p>
+<h4>结果</h4><p>反馈率仅45%（目标60%）</p>
+<h4>决策</h4><p>⚠️ 门槛太高，需简化</p>
+<h4>下一步</h4><p>测试1-tap反馈 vs 行为推断</p>
+</td>
+<!-- Cycle 3 -->
+<td class="llc-dark">
+<h4>假设</h4><p>1-tap emoji反馈能提高到70%+</p>
+<h4>实验</h4><p>简化为😋/😐/😕 + 可选文字</p>
+<h4>结果</h4><p>反馈率提升至73%</p>
+<h4>决策</h4><p>✅ 简化有效，proceed</p>
+<h4>下一步</h4><p>验证AI推荐准确度感知</p>
+</td>
+<!-- Cycle 4 -->
+<td class="llc-dark">
+<h4>假设</h4><p>3盒后用户能感知"越来越准"</p>
+<h4>实验</h4><p>第3盒附调查"推荐比第1盒更合口味吗？"</p>
+<h4>结果</h4><p>68%同意，22%强烈同意</p>
+<h4>决策</h4><p>✅ 飞轮成立，准备扩大</p>
+<h4>下一步</h4><p>定价测试 + 渠道扩展</p>
+</td>
+</tr>
+<!-- Bottom row: Alternatives, Solution, Metrics -->
+<tr>
+<td class="llc-blue" colspan="2">
+<h4>现有替代方案</h4>
+<ul>
+<li>瑞幸/Manner（便利但无个性化）</li>
+<li>三顿半/永璞订阅（固定产品线，无学习）</li>
+<li>自己研究选购（费时费力）</li>
+</ul>
+</td>
+<td class="llc-blue">
+<h4>概念方案</h4>
+<p>咖啡 Spotify (Brew DJ) — 80%安全区+20%探索区，可见的味觉雷达图进化</p>
+</td>
+<td class="llc-blue" colspan="2">
+<h4>累积观察指标</h4>
+<p>Quiz完成率 · 订阅转化率 · 首月反馈率 · 3月留存率 · NPS · 味觉档案匹配度</p>
+</td>
+</tr>
+<!-- Footer -->
+<tr>
+<td colspan="9" class="llc-footer">
+<strong>💡 Business Viability Question：</strong>如果口味匹配价值被验证，下一步需验证：用户是否愿意长期支付 ¥199/月（vs 自己买同品质咖啡约 ¥120/月的溢价是否可持续）？
+</td>
+</tr>
+</table>
 </div>
 </div>
 

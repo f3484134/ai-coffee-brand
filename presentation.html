@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>调调 Brew DJ — 产品创新展示</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --text: #f0ebe5;
+  --accent: #F4A261;
+  --caramel: #8B5E3C;
+  --mint: #7EC8B8;
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.1);
+  --gradient-1: linear-gradient(135deg, #8B5E3C 0%, #F4A261 100%);
+  --gradient-2: linear-gradient(135deg, #7EC8B8 0%, #F4A261 100%);
+}
+[data-theme="light"] {
+  --bg: #FFF8F0;
+  --text: #2C1810;
+  --glass: rgba(139,94,60,0.05);
+  --glass-border: rgba(139,94,60,0.15);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Noto Sans SC", sans-serif;
+  background: var(--bg); color: var(--text);
+  overflow: hidden; height: 100vh;
+  transition: background 0.4s, color 0.4s;
+}
+
+/* Particles */
+.particles {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+}
+.particle {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent); opacity: 0.3;
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  0% { transform: translateY(100vh) scale(0); opacity:0; }
+  10% { opacity:0.4; }
+  90% { opacity:0.2; }
+  100% { transform: translateY(-10vh) scale(1); opacity:0; }
+}
+
+/* Controls */
+.controls {
+  position: fixed; top: 20px; right: 20px; z-index: 1000;
+  display: flex; gap: 8px;
+}
+.ctrl-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--glass-border); background: var(--glass);
+  backdrop-filter: blur(10px); color: var(--text);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: all 0.3s;
+}
+.ctrl-btn:hover { background: var(--accent); color: #fff; }
+
+/* Progress */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 999;
+  background: var(--gradient-1); transition: width 0.4s ease;
+}
+
+/* Slide Counter */
+.slide-counter {
+  position: fixed; bottom: 20px; right: 24px; z-index: 999;
+  font-size: 0.85rem; opacity: 0.5; font-family: monospace;
+}
+
+/* Slides */
+.slide {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 60px 40px;
+  opacity: 0; transform: translateX(60px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none; z-index: 1;
+}
+.slide.active {
+  opacity: 1; transform: translateX(0); pointer-events: auto;
+}
+.slide.exit { opacity: 0; transform: translateX(-60px); }
+
+/* Glass Card */
+.glass {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 20px; padding: 48px; backdrop-filter: blur(20px);
+  max-width: 900px; width: 100%;
+}
+.glass-sm { padding: 32px; }
+
+/* Typography */
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 16px; }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 700; margin-bottom: 20px; }
+h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 12px; color: var(--accent); }
+p, li { font-size: clamp(0.9rem, 2vw, 1.05rem); line-height: 1.7; }
+ul { list-style: none; padding: 0; }
+ul li { padding: 6px 0; padding-left: 20px; position: relative; }
+ul li::before { content:'▸'; position:absolute; left:0; color: var(--accent); }
+
+.highlight { color: var(--accent); font-weight: 700; }
+.tag {
+  display: inline-block; padding: 4px 12px; border-radius: 50px;
+  background: var(--glass); border: 1px solid var(--glass-border);
+  font-size: 0.8rem; margin: 4px;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+.mini-card {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 12px; padding: 16px; text-align: center;
+}
+.mini-card .icon { font-size: 28px; margin-bottom: 8px; }
+.mini-card .name { font-weight: 600; font-size: 0.9rem; }
+.mini-card .role { font-size: 0.8rem; opacity: 0.6; margin-top: 4px; }
+
+.flow-diagram {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  justify-content: center; margin-top: 16px;
+}
+.flow-node {
+  padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+  background: var(--glass); border: 1px solid var(--glass-border);
+}
+.flow-arrow { font-size: 1.2rem; color: var(--accent); }
+
+.subtitle { opacity: 0.7; font-size: 1rem; margin-bottom: 24px; }
+.big-emoji { font-size: 64px; margin-bottom: 20px; }
+
+/* Steps overview */
+.steps-list { counter-reset: step; }
+.steps-list li { counter-increment: step; padding-left: 32px; margin-bottom: 8px; }
+.steps-list li::before { content: "Step " counter(step) " "; font-weight: 700; color: var(--accent); position: static; }
+
+@media (max-width: 700px) {
+  .slide { padding: 40px 20px; }
+  .glass { padding: 28px 20px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .flow-diagram { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="slide-counter" id="slideCounter">1 / 12</div>
+
+<div class="controls">
+  <button class="ctrl-btn" onclick="toggleTheme()" title="切换主题">🌓</button>
+  <button class="ctrl-btn" onclick="toggleFullscreen()" title="全屏">⛶</button>
+</div>
+
+<div class="particles" id="particles"></div>
+
+<!-- Slide 1: Title -->
+<div class="slide active" data-slide="1">
+  <div class="big-emoji">☕</div>
+  <h1>调调 Brew DJ</h1>
+  <p class="subtitle">AI 个性化咖啡订阅</p>
+  <p style="margin-top:32px;opacity:0.5;font-size:0.9rem;">HKU ICB AIBT 制作组 — Steve 团队</p>
+  <p style="margin-top:8px;opacity:0.3;font-size:0.8rem;">← → 键翻页 | 点击/滑动</p>
+</div>
+
+<!-- Slide 2: 六步骤总览 -->
+<div class="slide" data-slide="2">
+  <div class="glass">
+    <h2>产品创新六步骤</h2>
+    <ul class="steps-list">
+      <li>命题校准 — 定义核心假设与验证目标</li>
+      <li>用户洞察 — 市场研究与用户痛点挖掘</li>
+      <li>机会定义 — HMW 发散收斂，选定概念方向</li>
+      <li>方案设计 — 技术架构 + 设计系统</li>
+      <li>产品展示 — MVP 开发与体验验证</li>
+      <li>学习决策 — 假设验证与迭代方向</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 3: Step 0 -->
+<div class="slide" data-slide="3">
+  <div class="glass">
+    <h3>Step 0</h3>
+    <h2>命题校准</h2>
+    <p style="margin-bottom:16px;"><strong>核心假设：</strong></p>
+    <p style="font-size:1.2rem;font-style:italic;color:var(--accent);">「25-35 岁都市白领愿意为 AI 个性化配方的咖啡订阅付溢价」</p>
+    <div class="grid-2" style="margin-top:24px;">
+      <div class="mini-card"><div class="icon">🎯</div><div class="name">目标人群</div><div class="role">一线城市 25-35 岁白领</div></div>
+      <div class="mini-card"><div class="icon">💰</div><div class="name">价值验证</div><div class="role">为个性化付溢价的意愿</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Step 1 用户洞察 -->
+<div class="slide" data-slide="4">
+  <div class="glass glass-sm">
+    <h3>Step 1</h3>
+    <h2>用户洞察</h2>
+    <div class="grid-2">
+      <div>
+        <h3 style="color:var(--mint)">市场机会</h3>
+        <ul>
+          <li>2025 中国咖啡市场破 <span class="highlight">4000 亿</span></li>
+          <li>精品咖啡占比升至 25%</li>
+          <li>线上渠道年增 30%+</li>
+          <li>竞品无人同时满足：个性化+订阅+AI</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:var(--mint)">用户痛点</h3>
+        <ul>
+          <li>选择疲劳：品牌太多不知选哪个</li>
+          <li>口味固化：想尝新但怕踩雷</li>
+          <li>订阅脱节：缺乏反馈闭环</li>
+          <li>AI 戒心：需要用结果说话</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-style:italic;opacity:0.7;">「就像 Spotify 的推荐——一开始可能不准，但用越久越懂你」— Rachel, 31岁</p>
+  </div>
+</div>
+
+<!-- Slide 5: Step 2 机会定义 -->
+<div class="slide" data-slide="5">
+  <div class="glass">
+    <h3>Step 2</h3>
+    <h2>机会定义</h2>
+    <p style="margin-bottom:16px;"><strong>选定 HMW：</strong></p>
+    <p style="font-size:1.1rem;color:var(--accent);">如何让用户的每一次口味反馈都"看得见"地改善下一次推荐？</p>
+    <div style="margin-top:24px;">
+      <h3>概念选择：咖啡 Spotify（Brew DJ）</h3>
+      <ul>
+        <li>80% 安全区 + 20% 探索区</li>
+        <li>反馈即学习，雷达图实时更新</li>
+        <li>味觉年报制造分享时刻</li>
+        <li>用户心智模型已存在（Spotify 类比）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: Step 3 方案设计 -->
+<div class="slide" data-slide="6">
+  <div class="glass glass-sm">
+    <h3>Step 3</h3>
+    <h2>方案设计</h2>
+    <div class="grid-2">
+      <div>
+        <h3>技术架构</h3>
+        <ul>
+          <li>纯前端，GitHub Pages 部署</li>
+          <li>localStorage 口味档案</li>
+          <li>加权向量推荐算法</li>
+          <li>Chart.js 雷达图可视化</li>
+          <li>学习率 0.3（变化可感知）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>设计系统</h3>
+        <ul>
+          <li>品牌名：调调（双关义）</li>
+          <li>焦糖棕 + 奶沫白色彩系统</li>
+          <li>「有温度的精确」设计语言</li>
+          <li>15 秒反馈法则</li>
+          <li>情感语言替代专业术语</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Step 4 产品展示 -->
+<div class="slide" data-slide="7">
+  <div class="glass" style="text-align:center;">
+    <h3>Step 4</h3>
+    <h2>产品展示</h2>
+    <p style="margin-bottom:24px;">MVP Landing Page — 可交互的味觉档案体验</p>
+    <a href="index.html" target="_blank" style="display:inline-block;padding:16px 40px;background:var(--gradient-1);color:#fff;border-radius:50px;text-decoration:none;font-weight:600;font-size:1.1rem;transition:transform 0.3s;">
+      打开产品页面 →
+    </a>
+    <div class="grid-3" style="margin-top:32px;">
+      <div class="mini-card"><div class="icon">📝</div><div class="name">味觉测试</div></div>
+      <div class="mini-card"><div class="icon">📊</div><div class="name">雷达图档案</div></div>
+      <div class="mini-card"><div class="icon">😍</div><div class="name">Emoji 反馈</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Step 5 学习决策 -->
+<div class="slide" data-slide="8">
+  <div class="glass">
+    <h3>Step 5</h3>
+    <h2>学习决策</h2>
+    <div class="grid-2">
+      <div>
+        <h3>验证假设</h3>
+        <ul>
+          <li>用户是否完成 30 秒问卷？（完成率 > 60%）</li>
+          <li>反馈率 > 40%（emoji 评分）</li>
+          <li>味觉人格卡片分享率 > 10%</li>
+          <li>复访率（7日内再访 > 20%）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>关键指标</h3>
+        <ul>
+          <li>问卷→结果页转化率</li>
+          <li>平均反馈次数/用户</li>
+          <li>CTA 点击率</li>
+          <li>页面停留时长 > 90s</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: 团队介绍 -->
+<div class="slide" data-slide="9">
+  <div class="glass glass-sm">
+    <h2>幕后花絮 — 团队介绍</h2>
+    <div class="grid-3">
+      <div class="mini-card"><div class="icon">🔬</div><div class="name">Stephen</div><div class="role">Researcher 用户洞察</div></div>
+      <div class="mini-card"><div class="icon">🎯</div><div class="name">Steve</div><div class="role">PM 产品策略</div></div>
+      <div class="mini-card"><div class="icon">🏗️</div><div class="name">Tony</div><div class="role">Architect 技术架构</div></div>
+      <div class="mini-card"><div class="icon">🎨</div><div class="name">Natasha</div><div class="role">Designer 设计系统</div></div>
+      <div class="mini-card"><div class="icon">💻</div><div class="name">Vision</div><div class="role">Developer 开发实现</div></div>
+      <div class="mini-card"><div class="icon">🧪</div><div class="name">Thor</div><div class="role">QA 质量保障</div></div>
+      <div class="mini-card"><div class="icon">🧭</div><div class="name">Bob</div><div class="role">Coach 监督指导</div></div>
+    </div>
+    <p style="margin-top:16px;text-align:center;opacity:0.6;font-size:0.85rem;">每位成员均为独立 AI Agent，各自拥有不同模型与独立会话</p>
+  </div>
+</div>
+
+<!-- Slide 10: 协作流程 -->
+<div class="slide" data-slide="10">
+  <div class="glass">
+    <h2>幕后花絮 — 协作流程</h2>
+    <div class="flow-diagram">
+      <div class="flow-node">BRIEF.md<br><small>Steve</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">RESEARCH.md<br><small>Stephen</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">OPPORTUNITY.md<br><small>Steve</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">ARCHITECTURE.md<br><small>Tony</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">DESIGN.md<br><small>Natasha</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Landing Page<br><small>Vision</small></div>
+    </div>
+    <p style="margin-top:24px;text-align:center;opacity:0.7;">每个 Agent 只能通过文件（contract）获取上游信息，引用具体段落，允许挑战与分歧</p>
+  </div>
+</div>
+
+<!-- Slide 11: 技术说明 -->
+<div class="slide" data-slide="11">
+  <div class="glass">
+    <h2>幕后花絮 — 技术说明</h2>
+    <ul>
+      <li><span class="highlight">独立会话</span> — 每个 Agent 在独立 session 中运行，无共享上下文</li>
+      <li><span class="highlight">不同模型</span> — 各 Agent 可使用不同 AI 模型（Claude / GPT 等）</li>
+      <li><span class="highlight">文件即契约</span> — 唯一通信方式是读写 docs/ 目录下的 Markdown 文件</li>
+      <li><span class="highlight">Human-on-the-Loop</span> — Bob (Coach) 在关键节点 review，代表人类监督</li>
+      <li><span class="highlight">可追溯性</span> — 每份文档明确标注引用来源，分歧点显式记录</li>
+      <li><span class="highlight">零协调开销</span> — 无需会议、无需实时通信，异步协作完成全流程</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 12: 结语 -->
+<div class="slide" data-slide="12">
+  <div style="text-align:center;">
+    <div class="big-emoji">🚀</div>
+    <h1>AI Agent 团队协作的可能性</h1>
+    <p style="margin-top:16px;font-size:1.1rem;opacity:0.8;">从 0 到 1，6 个 Agent，6 份文档，1 个可交互产品</p>
+    <p style="margin-top:32px;opacity:0.5;">调调 Brew DJ — 每一杯，都是你的味道</p>
+    <p style="margin-top:8px;opacity:0.3;font-size:0.85rem;">感谢观看 | HKU ICB AIBT 2026</p>
+  </div>
+</div>
+
+<script>
+// Particles
+(function(){
+  const c = document.getElementById('particles');
+  for(let i=0;i<20;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDuration = (8+Math.random()*12)+'s';
+    p.style.animationDelay = Math.random()*10+'s';
+    p.style.width = p.style.height = (2+Math.random()*4)+'px';
+    c.appendChild(p);
+  }
+})();
+
+// Slides
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+
+function goTo(n) {
+  if(n<0||n>=total) return;
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  setTimeout(()=>slides[current===n?current:current].classList.remove('exit'),500);
+  const prev = current;
+  current = n;
+  slides[current].classList.add('active');
+  setTimeout(()=>slides[prev].classList.remove('exit'),500);
+  document.getElementById('progressBar').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slideCounter').textContent = (current+1)+' / '+total;
+}
+function next(){goTo(current+1);}
+function prev(){goTo(current-1);}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')next();
+  else if(e.key==='ArrowLeft')prev();
+  else if(e.key==='f')toggleFullscreen();
+});
+
+// Touch
+let touchX=0;
+document.addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;});
+document.addEventListener('touchend',e=>{
+  const diff=e.changedTouches[0].clientX-touchX;
+  if(Math.abs(diff)>50){diff<0?next():prev();}
+});
+
+// Click nav (left/right halves)
+document.addEventListener('click',e=>{
+  if(e.target.closest('.controls')||e.target.closest('a')||e.target.closest('button'))return;
+  e.clientX > window.innerWidth/2 ? next() : prev();
+});
+
+function toggleTheme(){
+  const t=document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme',t==='dark'?'light':'dark');
+}
+function toggleFullscreen(){
+  if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+</script>
+</body>
+</html>

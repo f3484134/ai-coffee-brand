@@ -1,471 +1,543 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>调调 Brew DJ — 每一杯，都是你的味道</title>
-<meta name="description" content="AI 个性化咖啡订阅，越喝越懂你">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>调调 Brew DJ — 懂你的每一口</title>
 <style>
 :root {
   --caramel: #8B5E3C;
-  --foam: #FFF8F0;
+  --cream: #FFF8F0;
   --espresso: #2C1810;
-  --peach: #F4A261;
-  --mint: #7EC8B8;
-  --green: #4CAF50;
-  --warn: #FF9800;
-  --gray: #9E9E9E;
-  --bg: var(--foam);
-  --text: var(--espresso);
-  --card-bg: #FFFFFF;
-  --card-shadow: rgba(139,94,60,0.08);
-  --section-alt: #FDF5ED;
+  --accent: #C4956A;
+  --accent-light: #D4A574;
+  --glass: rgba(255,248,240,0.08);
+  --glass-border: rgba(139,94,60,0.2);
   --radius: 16px;
-  --transition: 0.3s ease;
+  --shadow: 0 8px 32px rgba(44,24,16,0.3);
+}
+[data-theme="light"] {
+  --bg: #FFF8F0;
+  --text: #2C1810;
+  --text-dim: #6B4A35;
+  --surface: rgba(139,94,60,0.06);
+  --glass: rgba(255,255,255,0.8);
+  --glass-border: rgba(139,94,60,0.15);
 }
 [data-theme="dark"] {
-  --bg: #1A1210;
-  --text: #F5EDE8;
-  --card-bg: #2A201A;
-  --card-shadow: rgba(0,0,0,0.3);
-  --section-alt: #221A14;
-  --foam: #1A1210;
+  --bg: #1A0F0A;
+  --text: #FFF8F0;
+  --text-dim: #B8977A;
+  --surface: rgba(139,94,60,0.1);
+  --glass: rgba(44,24,16,0.6);
+  --glass-border: rgba(196,149,106,0.2);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  transition: background var(--transition), color var(--transition);
-  overflow-x: hidden;
-}
-.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+body { font-family: -apple-system, 'SF Pro Display', 'PingFang SC', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; transition: background 0.4s, color 0.4s; overflow-x: hidden; }
 
-/* Theme Toggle */
-.theme-toggle {
-  position: fixed; top: 20px; right: 20px; z-index: 1000;
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 2px solid var(--caramel); background: var(--card-bg);
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 20px; transition: all var(--transition);
-  box-shadow: 0 2px 12px var(--card-shadow);
-}
-.theme-toggle:hover { transform: scale(1.1); }
+/* Theme toggle */
+.theme-toggle { position:fixed; top:20px; right:20px; z-index:1000; width:40px; height:40px; border-radius:50%; border:1px solid var(--glass-border); background:var(--glass); backdrop-filter:blur(10px); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:all 0.3s; }
+.theme-toggle:hover { transform:scale(1.1); border-color:var(--caramel); }
 
-/* Hero */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  padding: 80px 24px;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--section-alt) 100%);
-}
-.hero-icon { font-size: 72px; margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-.hero h1 {
-  font-family: "Noto Serif SC", serif, -apple-system, sans-serif;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700; margin-bottom: 16px; color: var(--text);
-}
-.hero .subtitle {
-  font-size: clamp(1rem, 3vw, 1.25rem);
-  color: var(--caramel); margin-bottom: 40px; font-weight: 500;
-}
-.btn-primary {
-  display: inline-block; padding: 16px 40px;
-  background: var(--caramel); color: #fff;
-  border: none; border-radius: 50px;
-  font-size: 1.1rem; font-weight: 600;
-  cursor: pointer; text-decoration: none;
-  transition: all var(--transition);
-  box-shadow: 0 4px 20px rgba(139,94,60,0.3);
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(139,94,60,0.4); }
+/* ===== HERO ===== */
+.hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; position:relative; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 30%, rgba(139,94,60,0.15) 0%, transparent 70%); pointer-events:none; }
+.hero h1 { font-size:clamp(2rem,6vw,3.5rem); font-weight:800; margin-bottom:12px; background:linear-gradient(135deg, var(--caramel), var(--accent-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero .tagline { font-size:clamp(1rem,3vw,1.4rem); color:var(--text-dim); margin-bottom:32px; max-width:480px; }
+.hero .tagline em { font-style:normal; color:var(--caramel); font-weight:600; }
+.cta-btn { display:inline-flex; align-items:center; gap:8px; padding:16px 36px; background:linear-gradient(135deg, var(--caramel), #A0714D); color:#fff; border:none; border-radius:50px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:all 0.3s; box-shadow:0 4px 20px rgba(139,94,60,0.4); }
+.cta-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(139,94,60,0.5); }
+.cta-btn:active { transform:scale(0.97); }
+.micro-badges { display:flex; gap:20px; margin-top:32px; flex-wrap:wrap; justify-content:center; }
+.micro-badges .badge { display:flex; align-items:center; gap:6px; font-size:0.82rem; color:var(--text-dim); padding:8px 14px; background:var(--surface); border-radius:20px; border:1px solid var(--glass-border); }
+.micro-badges .badge span { font-size:1rem; }
 
-/* Sections */
-section { padding: 80px 24px; }
-.section-title {
-  text-align: center; font-size: clamp(1.5rem, 4vw, 2.2rem);
-  font-weight: 700; margin-bottom: 48px;
-}
+/* ===== QUIZ ===== */
+.quiz-section { display:none; position:fixed; inset:0; z-index:900; background:var(--bg); flex-direction:column; align-items:center; justify-content:center; }
+.quiz-section.active { display:flex; }
+.quiz-progress { position:absolute; top:0; left:0; width:100%; height:4px; background:var(--surface); }
+.quiz-progress-bar { height:100%; background:linear-gradient(90deg, var(--caramel), var(--accent-light)); transition:width 0.4s ease; border-radius:0 2px 2px 0; }
+.quiz-container { width:100%; max-width:480px; padding:24px; text-align:center; }
+.quiz-question { font-size:clamp(1.2rem,4vw,1.6rem); font-weight:700; margin-bottom:8px; color:var(--text); opacity:0; transform:translateY(20px); transition:all 0.4s ease; }
+.quiz-question.visible { opacity:1; transform:translateY(0); }
+.quiz-subtitle { font-size:0.9rem; color:var(--text-dim); margin-bottom:28px; opacity:0; transform:translateY(20px); transition:all 0.4s ease 0.1s; }
+.quiz-subtitle.visible { opacity:1; transform:translateY(0); }
+.quiz-options { display:flex; flex-direction:column; gap:12px; }
+.quiz-option { padding:18px 20px; background:var(--glass); border:2px solid var(--glass-border); border-radius:var(--radius); cursor:pointer; font-size:1rem; color:var(--text); transition:all 0.2s; text-align:left; display:flex; align-items:center; gap:12px; opacity:0; transform:translateY(15px); }
+.quiz-option.visible { opacity:1; transform:translateY(0); }
+.quiz-option:hover { border-color:var(--caramel); background:rgba(139,94,60,0.1); }
+.quiz-option.selected { border-color:var(--caramel); background:rgba(139,94,60,0.15); transform:scale(0.97); }
+.quiz-option .emoji { font-size:1.4rem; }
+.quiz-back { position:absolute; top:20px; left:20px; background:none; border:none; color:var(--text-dim); font-size:1.2rem; cursor:pointer; padding:8px; }
 
-/* How it Works */
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
-.step {
-  text-align: center; padding: 32px 24px;
-  background: var(--card-bg); border-radius: var(--radius);
-  box-shadow: 0 4px 24px var(--card-shadow);
-  transition: transform var(--transition);
-}
-.step:hover { transform: translateY(-4px); }
-.step-icon { font-size: 48px; margin-bottom: 16px; }
-.step-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
-.step-desc { font-size: 0.95rem; color: var(--gray); }
+/* Slider question */
+.slider-container { padding:20px 0; }
+.slider-container input[type="range"] { width:100%; -webkit-appearance:none; height:6px; border-radius:3px; background:var(--surface); outline:none; margin:20px 0; }
+.slider-container input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:28px; height:28px; border-radius:50%; background:var(--caramel); cursor:pointer; box-shadow:0 2px 8px rgba(139,94,60,0.4); }
+.slider-labels { display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-dim); }
+.slider-confirm { margin-top:20px; padding:14px 28px; background:var(--caramel); color:#fff; border:none; border-radius:50px; font-size:1rem; cursor:pointer; transition:all 0.2s; }
+.slider-confirm:hover { background:var(--accent); }
 
-/* Quiz Section */
-.quiz-section { background: var(--section-alt); border-radius: var(--radius); }
-.quiz-container {
-  max-width: 600px; margin: 0 auto;
-  background: var(--card-bg); border-radius: var(--radius);
-  padding: 40px 32px; box-shadow: 0 8px 40px var(--card-shadow);
-}
-.quiz-progress {
-  height: 4px; background: #e0d5cc; border-radius: 2px; margin-bottom: 32px; overflow: hidden;
-}
-.quiz-progress-bar {
-  height: 100%; background: var(--caramel); border-radius: 2px;
-  transition: width 0.4s ease;
-}
-.quiz-question { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; text-align: center; }
-.quiz-options { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-.quiz-option {
-  padding: 12px 24px; border: 2px solid #e0d5cc; border-radius: 50px;
-  cursor: pointer; transition: all var(--transition); font-size: 0.95rem;
-  background: var(--card-bg);
-}
-.quiz-option:hover, .quiz-option.selected {
-  border-color: var(--caramel); background: var(--caramel); color: #fff;
-}
-.quiz-slider-wrap { text-align: center; }
-.quiz-slider {
-  width: 100%; max-width: 400px; margin: 16px auto;
-  -webkit-appearance: none; height: 8px; border-radius: 4px;
-  background: linear-gradient(to right, var(--mint), var(--peach));
-  outline: none;
-}
-.quiz-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 24px; height: 24px;
-  border-radius: 50%; background: var(--caramel); cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.slider-labels { display: flex; justify-content: space-between; max-width: 400px; margin: 0 auto; font-size: 0.85rem; color: var(--gray); }
-.quiz-nav { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
-.btn-secondary {
-  padding: 10px 28px; border: 2px solid var(--caramel); color: var(--caramel);
-  background: transparent; border-radius: 50px; cursor: pointer;
-  font-size: 0.95rem; transition: all var(--transition);
-}
-.btn-secondary:hover { background: var(--caramel); color: #fff; }
-.btn-small {
-  padding: 10px 28px; border: none; background: var(--caramel); color: #fff;
-  border-radius: 50px; cursor: pointer; font-size: 0.95rem;
-  transition: all var(--transition);
-}
-.btn-small:hover { opacity: 0.9; transform: translateY(-1px); }
+/* ===== RESULT ===== */
+.result-section { display:none; min-height:100vh; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; text-align:center; }
+.result-section.active { display:flex; }
+.result-loading { font-size:1.1rem; color:var(--text-dim); }
+.result-loading .dots::after { content:''; animation:dots 1.5s infinite; }
+@keyframes dots { 0%{content:'.'} 33%{content:'..'} 66%{content:'...'} }
+.radar-wrap { width:280px; height:280px; margin:20px auto; position:relative; }
+.radar-wrap canvas { width:100%; height:100%; }
+.persona-badge { display:inline-block; padding:10px 24px; background:linear-gradient(135deg, var(--caramel), var(--accent-light)); color:#fff; border-radius:50px; font-size:1.3rem; font-weight:700; margin:16px 0; opacity:0; transform:scale(0.8); transition:all 0.5s ease; }
+.persona-badge.show { opacity:1; transform:scale(1); }
+.persona-desc { max-width:400px; color:var(--text-dim); font-size:0.95rem; line-height:1.7; margin:12px auto 24px; }
+.share-btn { padding:12px 24px; border:2px solid var(--caramel); background:transparent; color:var(--caramel); border-radius:50px; font-size:0.95rem; cursor:pointer; transition:all 0.2s; }
+.share-btn:hover { background:var(--caramel); color:#fff; }
 
-/* Radar Chart */
-.radar-section { text-align: center; }
-.radar-wrap {
-  max-width: 400px; margin: 0 auto; background: var(--card-bg);
-  border-radius: var(--radius); padding: 32px;
-  box-shadow: 0 4px 24px var(--card-shadow);
-}
-.persona-badge {
-  display: inline-block; padding: 8px 20px; margin-top: 16px;
-  background: linear-gradient(135deg, var(--caramel), var(--peach));
-  color: #fff; border-radius: 50px; font-weight: 600; font-size: 0.95rem;
-}
+/* ===== RECOMMENDATION ===== */
+.recommend-section { display:none; min-height:100vh; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; }
+.recommend-section.active { display:flex; }
+.bean-card { background:var(--glass); border:1px solid var(--glass-border); border-radius:20px; padding:28px; max-width:400px; width:100%; text-align:left; backdrop-filter:blur(10px); }
+.bean-card .origin { font-size:0.8rem; color:var(--caramel); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+.bean-card h3 { font-size:1.4rem; margin-bottom:8px; color:var(--text); }
+.bean-card .flavors { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
+.bean-card .flavor-tag { padding:4px 12px; background:rgba(139,94,60,0.1); border:1px solid var(--glass-border); border-radius:20px; font-size:0.8rem; color:var(--accent-light); }
+.bean-card .why { font-size:0.9rem; color:var(--text-dim); margin-top:12px; padding-top:12px; border-top:1px solid var(--glass-border); }
+.evolve-note { max-width:400px; text-align:center; margin:20px 0; font-size:0.9rem; color:var(--text-dim); line-height:1.6; }
+.subscribe-cta { margin-top:20px; padding:16px 36px; background:linear-gradient(135deg, var(--caramel), #A0714D); color:#fff; border:none; border-radius:50px; font-size:1.1rem; font-weight:600; cursor:pointer; box-shadow:0 4px 20px rgba(139,94,60,0.4); transition:all 0.3s; }
+.subscribe-cta:hover { transform:translateY(-2px); }
 
-/* Feedback Demo */
-.feedback-demo {
-  max-width: 500px; margin: 32px auto 0;
-  background: var(--card-bg); border-radius: var(--radius);
-  padding: 24px; box-shadow: 0 4px 24px var(--card-shadow);
-  text-align: center;
-}
-.feedback-title { font-size: 1rem; margin-bottom: 16px; font-weight: 500; }
-.emoji-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
-.emoji-btn {
-  font-size: 32px; cursor: pointer; transition: transform 0.2s;
-  background: none; border: none; padding: 8px;
-  border-radius: 50%;
-}
-.emoji-btn:hover { transform: scale(1.3); }
-.emoji-btn.active { transform: scale(1.3); background: var(--section-alt); }
-.feedback-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
-.tag {
-  padding: 6px 16px; border: 1px solid #e0d5cc; border-radius: 50px;
-  font-size: 0.85rem; cursor: pointer; transition: all var(--transition);
-}
-.tag.active { border-color: var(--caramel); background: var(--caramel); color: #fff; }
-.feedback-result { font-size: 0.9rem; color: var(--green); min-height: 24px; font-weight: 500; }
+/* ===== BELOW FOLD ===== */
+.below-fold { padding:80px 24px; max-width:680px; margin:0 auto; }
+.cycle-diagram { display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin:30px 0; padding:24px; background:var(--glass); border:1px solid var(--glass-border); border-radius:var(--radius); }
+.cycle-step { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.cycle-step .icon { font-size:1.8rem; }
+.cycle-step .label { font-size:0.75rem; color:var(--text-dim); }
+.cycle-arrow { font-size:1.2rem; color:var(--caramel); }
+.section-title { font-size:1.5rem; font-weight:700; text-align:center; margin-bottom:24px; color:var(--text); }
+.faq { margin-top:40px; }
+.faq-item { border-bottom:1px solid var(--glass-border); padding:16px 0; }
+.faq-q { font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.faq-q::after { content:'+'; color:var(--caramel); font-size:1.2rem; transition:transform 0.3s; }
+.faq-item.open .faq-q::after { transform:rotate(45deg); }
+.faq-a { max-height:0; overflow:hidden; transition:max-height 0.3s ease; color:var(--text-dim); font-size:0.9rem; line-height:1.6; }
+.faq-item.open .faq-a { max-height:200px; padding-top:8px; }
+.brand-trust { text-align:center; margin:40px 0 20px; }
+.brand-trust p { font-size:0.85rem; color:var(--text-dim); }
 
-/* Pricing */
-.pricing-card {
-  max-width: 400px; margin: 0 auto; text-align: center;
-  background: var(--card-bg); border-radius: var(--radius);
-  padding: 48px 32px; box-shadow: 0 8px 40px var(--card-shadow);
-  border: 2px solid var(--caramel);
-}
-.pricing-amount { font-size: 3rem; font-weight: 700; color: var(--caramel); }
-.pricing-unit { font-size: 1rem; color: var(--gray); }
-.pricing-features { list-style: none; margin: 24px 0; text-align: left; }
-.pricing-features li { padding: 8px 0; border-bottom: 1px solid #f0e8e0; }
-.pricing-features li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+/* Confetti */
+.confetti-container { position:fixed; inset:0; pointer-events:none; z-index:950; }
+.confetti { position:absolute; width:8px; height:8px; border-radius:2px; animation:confetti-fall 2.5s ease-out forwards; }
+@keyframes confetti-fall { 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
 
-/* Footer */
-footer {
-  padding: 48px 24px; text-align: center;
-  background: var(--section-alt); border-top: 1px solid #e0d5cc;
-}
-footer p { color: var(--gray); font-size: 0.9rem; margin-top: 8px; }
-.footer-brand { font-size: 1.2rem; font-weight: 700; color: var(--caramel); }
-
-/* Hidden */
-.hidden { display: none !important; }
+/* Particles */
+#particles { position:fixed; inset:0; z-index:0; pointer-events:none; }
 
 /* Responsive */
-@media (max-width: 600px) {
-  section { padding: 60px 16px; }
-  .quiz-container { padding: 24px 16px; }
-  .radar-wrap { padding: 20px; }
-  .pricing-card { padding: 32px 20px; }
-  .emoji-btn { font-size: 28px; }
+@media(max-width:480px) {
+  .hero { padding:60px 20px; }
+  .quiz-option { padding:16px; }
+  .micro-badges { gap:10px; }
 }
 </style>
 </head>
-<body>
-<button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">🌙</button>
+<body data-theme="dark">
+<canvas id="particles"></canvas>
+<button class="theme-toggle" onclick="toggleTheme()">☀️</button>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-icon">☕</div>
-  <h1>每一杯，都是你的味道</h1>
-  <p class="subtitle">AI 帮你调，你来打分 — 越喝越懂你</p>
-  <a href="#quiz" class="btn-primary">30秒找到你的口味 →</a>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <h1>调调 Brew DJ</h1>
+  <p class="tagline">别人给你推荐咖啡，我们<em>读懂你为什么喜欢</em>。<br>30 秒味觉测试，解锁你的咖啡人格。</p>
+  <button class="cta-btn" onclick="startQuiz()">☕ 开始味觉测试</button>
+  <div class="micro-badges">
+    <div class="badge"><span>🏔️</span> 精品产地直采</div>
+    <div class="badge"><span>🤖</span> AI 越喝越懂你</div>
+    <div class="badge"><span>📦</span> 随时可调可退</div>
+  </div>
 </section>
 
-<!-- How it Works -->
-<section>
-  <div class="container">
-    <h2 class="section-title">三步开启你的味觉旅程</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">📝</div>
-        <div class="step-title">告诉我们你的口味</div>
-        <div class="step-desc">30秒味觉小测试，不需要懂咖啡</div>
-      </div>
-      <div class="step">
-        <div class="step-icon">🎵</div>
-        <div class="step-title">调调帮你配</div>
-        <div class="step-desc">80% 安全区 + 20% 探索区，像 Spotify 越听越准</div>
-      </div>
-      <div class="step">
-        <div class="step-icon">😍</div>
-        <div class="step-title">喝完打个分</div>
-        <div class="step-desc">点个 emoji，15秒搞定，你的档案就在成长</div>
-      </div>
+<!-- QUIZ -->
+<section class="quiz-section" id="quiz">
+  <button class="quiz-back" onclick="quizBack()">← 返回</button>
+  <div class="quiz-progress"><div class="quiz-progress-bar" id="progress-bar"></div></div>
+  <div class="quiz-container" id="quiz-container"></div>
+</section>
+
+<!-- RESULT -->
+<section class="result-section" id="result">
+  <div class="result-loading" id="result-loading">正在分析你的味觉DNA<span class="dots"></span></div>
+  <div id="result-content" style="display:none;">
+    <div class="radar-wrap"><canvas id="radar-canvas" width="280" height="280"></canvas></div>
+    <div class="persona-badge" id="persona-badge"></div>
+    <p class="persona-desc" id="persona-desc"></p>
+    <button class="share-btn" onclick="shareResult()">📤 分享你的咖啡人格</button>
+    <div style="margin-top:24px;"><button class="cta-btn" onclick="showRecommend()">看看为你推荐的第一盒 →</button></div>
+  </div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section class="recommend-section" id="recommend">
+  <h2 style="font-size:1.2rem;color:var(--text-dim);margin-bottom:16px;">根据你的味觉档案，推荐：</h2>
+  <div class="bean-card" id="bean-card"></div>
+  <p class="evolve-note">📈 之后每盒都会根据你的反馈越来越准。<br>你教会 AI 的每一个偏好，都让下一杯更懂你。</p>
+  <button class="subscribe-cta" onclick="alert('订阅功能即将上线，感谢你的兴趣！')">订阅第一盒 · ¥199/月</button>
+</section>
+
+<!-- BELOW FOLD -->
+<section class="below-fold" id="below-fold" style="display:none;">
+  <h2 class="section-title">它是怎么越来越懂你的？</h2>
+  <div class="cycle-diagram">
+    <div class="cycle-step"><span class="icon">📦</span><span class="label">收到</span></div>
+    <span class="cycle-arrow">→</span>
+    <div class="cycle-step"><span class="icon">☕</span><span class="label">品尝</span></div>
+    <span class="cycle-arrow">→</span>
+    <div class="cycle-step"><span class="icon">💬</span><span class="label">反馈</span></div>
+    <span class="cycle-arrow">→</span>
+    <div class="cycle-step"><span class="icon">🧠</span><span class="label">AI 学习</span></div>
+    <span class="cycle-arrow">→</span>
+    <div class="cycle-step"><span class="icon">🎯</span><span class="label">更懂你</span></div>
+  </div>
+  <div class="brand-trust">
+    <p>🏔️ 豆源来自埃塞俄比亚、哥伦比亚、云南等精品产区</p>
+    <p style="margin-top:8px;">✨ 已有 2,000+ 用户完成味觉测试</p>
+  </div>
+  <div class="faq">
+    <h2 class="section-title">常见问题</h2>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">AI 推荐真的准吗？</div>
+      <div class="faq-a">第一盒基于你的测试结果匹配，准确率约 80%。之后每次反馈都让 AI 更懂你，三盒之后大多数用户表示「比自己选的好喝」。</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">不喜欢可以退吗？</div>
+      <div class="faq-a">随时可调整频率或暂停。第一盒不满意全额退款，零风险。</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">每月收到什么？</div>
+      <div class="faq-a">根据你的订阅档位，每月收到 200g-400g 精品咖啡豆（或挂耳包），附带 AI 风味卡片和冲煮建议。</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">和普通订阅有什么区别？</div>
+      <div class="faq-a">普通订阅给所有人寄一样的。我们的 AI 会学习你的偏好，每一盒都是为你个人挑选的——越喝越准，像一个懂你的咖啡师朋友。</div>
     </div>
   </div>
 </section>
 
-<!-- Quiz -->
-<section id="quiz" class="quiz-section">
-  <div class="container">
-    <h2 class="section-title">找到你的味觉档案</h2>
-    <div class="quiz-container">
-      <div class="quiz-progress"><div class="quiz-progress-bar" id="progressBar" style="width:25%"></div></div>
-      <div id="quizContent"></div>
-      <div class="quiz-nav">
-        <button class="btn-secondary hidden" id="prevBtn" onclick="prevQuestion()">上一题</button>
-        <button class="btn-small" id="nextBtn" onclick="nextQuestion()">下一题</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Radar Result -->
-<section class="radar-section hidden" id="resultSection">
-  <div class="container">
-    <h2 class="section-title">你的味觉档案</h2>
-    <div class="radar-wrap">
-      <canvas id="radarChart" width="300" height="300"></canvas>
-      <div class="persona-badge" id="personaBadge"></div>
-    </div>
-    <!-- Feedback Demo -->
-    <div class="feedback-demo" id="feedbackDemo">
-      <div class="feedback-title">☕ 试试反馈：给「耶加雪菲·果丁丁」打个分</div>
-      <div class="emoji-row">
-        <button class="emoji-btn" data-score="1" onclick="rateCoffee(1)">😐</button>
-        <button class="emoji-btn" data-score="2" onclick="rateCoffee(2)">🙂</button>
-        <button class="emoji-btn" data-score="3" onclick="rateCoffee(3)">😊</button>
-        <button class="emoji-btn" data-score="4" onclick="rateCoffee(4)">😍</button>
-        <button class="emoji-btn" data-score="5" onclick="rateCoffee(5)">🤩</button>
-      </div>
-      <div class="feedback-tags">
-        <span class="tag" onclick="this.classList.toggle('active')">太酸</span>
-        <span class="tag" onclick="this.classList.toggle('active')">太苦</span>
-        <span class="tag" onclick="this.classList.toggle('active')">刚好</span>
-        <span class="tag" onclick="this.classList.toggle('active')">想再喝</span>
-      </div>
-      <div class="feedback-result" id="feedbackResult"></div>
-    </div>
-  </div>
-</section>
-
-<!-- Pricing -->
-<section>
-  <div class="container">
-    <h2 class="section-title">开始你的味觉订阅</h2>
-    <div class="pricing-card">
-      <div class="pricing-amount">¥199<span class="pricing-unit">/月</span></div>
-      <ul class="pricing-features">
-        <li>每月 12 杯精品咖啡</li>
-        <li>80% 你验证喜欢的 + 20% 惊喜探索</li>
-        <li>每杯附带味觉档案更新</li>
-        <li>月度味觉年报（可分享）</li>
-        <li>不喜欢随时调，无锁定期</li>
-      </ul>
-      <button class="btn-primary" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">先测口味，再决定 →</button>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer>
-  <div class="footer-brand">调调 Brew DJ</div>
-  <p>精品豆源 · 新鲜烘焙 · AI 个性化配方 · 随时可退订</p>
-  <p style="margin-top:16px;font-size:0.8rem;">© 2026 调调 Brew DJ — HKU ICB AIBT Steve 团队出品</p>
-</footer>
+<div class="confetti-container" id="confetti-container"></div>
 
 <script>
-// Theme
-function toggleTheme() {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.querySelector('.theme-toggle').textContent = isDark ? '🌙' : '☀️';
-  localStorage.setItem('theme', isDark ? 'light' : 'dark');
-}
-(function(){
-  const saved = localStorage.getItem('theme');
-  if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.querySelector('.theme-toggle').textContent='☀️'; }
-})();
-
-// Quiz
+// === Quiz Data ===
 const questions = [
-  { q: '你喜欢什么感觉？', type: 'choice', options: [{label:'☀️ 清爽明亮',v:{acidity:80,sweetness:60,fruity:70,bitterness:20,body:30}},{label:'🍫 醇厚温暖',v:{acidity:20,sweetness:50,fruity:20,bitterness:60,body:85}},{label:'🌸 层次丰富',v:{acidity:60,sweetness:70,fruity:80,bitterness:40,body:50}}] },
-  { q: '酸度接受度？', type: 'slider', dim: 'acidity', min:'完全不要酸', max:'爱死果酸了' },
-  { q: '你的咖啡时刻？', type: 'multi', options: [{label:'早晨唤醒',v:{bitterness:10,body:10}},{label:'午后续命',v:{sweetness:10,body:5}},{label:'专注加持',v:{bitterness:5,acidity:5}},{label:'放松享受',v:{sweetness:10,fruity:10}}] },
-  { q: '冒险程度？', type: 'choice', options: [{label:'🛡️ 稳一点',v:{explorer:0}},{label:'🚀 带我探索',v:{explorer:1}}] }
+  {
+    q: "周一早晨，闹钟响了三次。你终于起来，第一杯咖啡你想要——",
+    sub: "选一个最接近你此刻心情的",
+    type: "choice",
+    options: [
+      { emoji:"⚡", text:"一记重拳把我打醒", value:"bold" },
+      { emoji:"🌊", text:"温柔地把我唤醒", value:"smooth" },
+      { emoji:"🍊", text:"像咬一口鲜橙那样清爽", value:"fruity" },
+      { emoji:"🍫", text:"像裹着毯子一样温暖", value:"chocolaty" }
+    ]
+  },
+  {
+    q: "朋友约你去一家新餐厅，你通常会——",
+    sub: "这反映了你对「新体验」的态度",
+    type: "choice",
+    options: [
+      { emoji:"🎲", text:"直接点 Chef's Choice", value:"adventurous" },
+      { emoji:"📖", text:"先看菜单研究 10 分钟", value:"analytical" },
+      { emoji:"👥", text:"问朋友推荐什么", value:"social" },
+      { emoji:"🔄", text:"找一道和我常吃的类似的", value:"familiar" }
+    ]
+  },
+  {
+    q: "如果你的咖啡是一首歌，你希望它是——",
+    sub: "想象那个味道的 vibe",
+    type: "choice",
+    options: [
+      { emoji:"🎷", text:"爵士 · 层次丰富慢慢品", value:"complex" },
+      { emoji:"🎸", text:"摇滚 · 强烈直接有冲击", value:"intense" },
+      { emoji:"🎹", text:"古典 · 优雅平衡不出错", value:"balanced" },
+      { emoji:"🎵", text:"Lo-fi · 轻柔舒服当背景", value:"mild" }
+    ]
+  },
+  {
+    q: "甜和酸，你更能接受哪边多一点？",
+    sub: "拖动滑块 — 左边偏酸，右边偏甜",
+    type: "slider",
+    min: "🍋 明亮酸质",
+    max: "🍯 甜感优先",
+    value: 50
+  },
+  {
+    q: "一杯咖啡，你最在意的是——",
+    sub: "最后一题了！",
+    type: "choice",
+    options: [
+      { emoji:"👃", text:"香气 · 闻到就开心", value:"aroma" },
+      { emoji:"👅", text:"口感 · 丝滑or醇厚", value:"body" },
+      { emoji:"🎭", text:"余韵 · 喝完嘴里留着的", value:"aftertaste" },
+      { emoji:"💡", text:"惊喜 · 每次都不一样", value:"surprise" }
+    ]
+  }
 ];
+
+// === Personas ===
+const personas = {
+  explorer: { name:"探索者", desc:"你天生好奇，喜欢尝试新事物。咖啡对你来说是味觉冒险——你享受每一次打开新豆子时的未知感。果酸、花香、发酵风味都是你的游乐场。", beans:{ name:"耶加雪菲 · 日晒 Aricha", origin:"埃塞俄比亚 · 耶加雪菲", flavors:["蓝莓","茉莉花","热带水果","红酒余韵"], why:"你的探索精神配得上这支充满惊喜的日晒豆。从第一口的蓝莓炸裂到尾韵的红酒感，每一口都是新发现。" }},
+  ritualist: { name:"仪式感玩家", desc:"咖啡是你的 daily ritual——不只是喝，是整个过程。你享受研磨的声音、萃取的等待、第一口的满足。你追求稳定中带着细腻的层次感。", beans:{ name:"哥伦比亚 · 水洗 Huila", origin:"哥伦比亚 · 慧兰", flavors:["焦糖","坚果","黑巧克力","柔和柑橘"], why:"经典平衡的水洗豆，每一口都是你熟悉又期待的味道。焦糖与坚果的和谐，是属于仪式感的安心。" }},
+  sensualist: { name:"感官主义者", desc:"你用身体感受咖啡——香气、温度、口感的厚薄。你可能闭着眼睛喝咖啡，让味蕾告诉你一切。你追求的是「触感」，是丝滑或醇厚带来的满足。", beans:{ name:"曼特宁 · 湿刨 Gayo", origin:"印尼 · 苏门答腊", flavors:["黑巧克力","烟草","松木","奶油质感"], why:"低酸、厚重、有存在感。这支曼特宁的 body 就像天鹅绒，会满足你对口感的所有想象。" }},
+  minimalist: { name:"本质主义者", desc:"你不需要花哨的风味描述——好喝就是好喝。你欣赏简洁、干净、不over的东西。咖啡于你是日常中一个小而确定的愉悦。", beans:{ name:"云南 · 水洗 保山小粒", origin:"中国 · 云南保山", flavors:["红糖","烤杏仁","干净","柔和"], why:"国产精品的清澈代表。没有多余的杂味，只有纯净的甜感和坚果调。简单，但每一口都对。" }}
+};
+
 let currentQ = 0;
-let answers = { acidity:50, bitterness:50, sweetness:50, body:50, fruity:50 };
+let answers = [];
+
+function startQuiz() {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('quiz').classList.add('active');
+  renderQuestion();
+}
+
+function quizBack() {
+  if (currentQ > 0) { currentQ--; answers.pop(); renderQuestion(); }
+  else { document.getElementById('quiz').classList.remove('active'); document.getElementById('hero').style.display = ''; }
+}
 
 function renderQuestion() {
   const q = questions[currentQ];
-  const progress = ((currentQ+1)/questions.length)*100;
-  document.getElementById('progressBar').style.width = progress+'%';
-  document.getElementById('prevBtn').classList.toggle('hidden', currentQ===0);
-  document.getElementById('nextBtn').textContent = currentQ===questions.length-1 ? '查看结果' : '下一题';
-  let html = '<div class="quiz-question">'+q.q+'</div>';
-  if (q.type==='choice') {
+  const bar = document.getElementById('progress-bar');
+  bar.style.width = ((currentQ) / questions.length * 100) + '%';
+  const container = document.getElementById('quiz-container');
+  
+  let html = `<div class="quiz-question" id="qq">${q.q}</div><div class="quiz-subtitle" id="qs">${q.sub}</div>`;
+  
+  if (q.type === 'choice') {
     html += '<div class="quiz-options">';
-    q.options.forEach((o,i)=>{ html += '<div class="quiz-option" data-idx="'+i+'" onclick="selectOption(this,'+currentQ+','+i+')">'+o.label+'</div>'; });
+    q.options.forEach((opt, i) => {
+      html += `<div class="quiz-option" data-idx="${i}" onclick="selectOption(this, ${i})" style="transition-delay:${i*0.08}s"><span class="emoji">${opt.emoji}</span>${opt.text}</div>`;
+    });
     html += '</div>';
-  } else if (q.type==='slider') {
-    html += '<div class="quiz-slider-wrap"><input type="range" class="quiz-slider" id="sliderInput" min="0" max="100" value="'+answers[q.dim]+'"><div class="slider-labels"><span>'+q.min+'</span><span>'+q.max+'</span></div></div>';
-  } else if (q.type==='multi') {
-    html += '<div class="quiz-options">';
-    q.options.forEach((o,i)=>{ html += '<div class="quiz-option" data-idx="'+i+'" onclick="toggleMulti(this,'+currentQ+','+i+')">'+o.label+'</div>'; });
-    html += '</div>';
+  } else if (q.type === 'slider') {
+    html += `<div class="slider-container">
+      <input type="range" min="0" max="100" value="50" id="slider-input">
+      <div class="slider-labels"><span>${q.min}</span><span>${q.max}</span></div>
+      <button class="slider-confirm" onclick="confirmSlider()">确认</button>
+    </div>`;
   }
-  document.getElementById('quizContent').innerHTML = html;
+  
+  container.innerHTML = html;
+  
+  // Animate in
+  requestAnimationFrame(() => {
+    document.getElementById('qq').classList.add('visible');
+    document.getElementById('qs').classList.add('visible');
+    container.querySelectorAll('.quiz-option').forEach(o => o.classList.add('visible'));
+  });
 }
 
-function selectOption(el, qi, idx) {
-  document.querySelectorAll('.quiz-option').forEach(e=>e.classList.remove('selected'));
+function selectOption(el, idx) {
+  if (el.classList.contains('selected')) return;
   el.classList.add('selected');
-  const v = questions[qi].options[idx].v;
-  Object.keys(v).forEach(k=>{ if(k!=='explorer') answers[k]=v[k]; });
+  answers.push(questions[currentQ].options[idx].value);
+  setTimeout(() => { currentQ++; if (currentQ < questions.length) renderQuestion(); else showResult(); }, 300);
 }
-function toggleMulti(el, qi, idx) {
-  el.classList.toggle('selected');
-  const v = questions[qi].options[idx].v;
-  if(el.classList.contains('selected')) Object.keys(v).forEach(k=>{ answers[k]=Math.min(100,answers[k]+v[k]); });
-  else Object.keys(v).forEach(k=>{ answers[k]=Math.max(0,answers[k]-v[k]); });
+
+function confirmSlider() {
+  const val = document.getElementById('slider-input').value;
+  answers.push(val);
+  currentQ++;
+  if (currentQ < questions.length) renderQuestion(); else showResult();
 }
-function nextQuestion() {
-  if (questions[currentQ].type==='slider') {
-    const s = document.getElementById('sliderInput');
-    if(s) answers[questions[currentQ].dim] = parseInt(s.value);
-  }
-  if (currentQ < questions.length-1) { currentQ++; renderQuestion(); }
-  else showResult();
-}
-function prevQuestion() { if(currentQ>0){currentQ--;renderQuestion();} }
 
 function showResult() {
-  localStorage.setItem('brewdj_profile', JSON.stringify(answers));
-  document.getElementById('quiz').classList.add('hidden');
-  document.getElementById('resultSection').classList.remove('hidden');
-  document.getElementById('resultSection').scrollIntoView({behavior:'smooth'});
-  renderRadar();
-  assignPersona();
+  document.getElementById('quiz').classList.remove('active');
+  document.getElementById('result').classList.add('active');
+  document.getElementById('result').style.display = 'flex';
+  
+  // Loading phase
+  setTimeout(() => {
+    document.getElementById('result-loading').style.display = 'none';
+    document.getElementById('result-content').style.display = 'block';
+    
+    // Determine persona
+    const persona = determinePersona();
+    const p = personas[persona];
+    
+    // Draw radar
+    drawRadar();
+    
+    // Typewriter persona name
+    const badge = document.getElementById('persona-badge');
+    typewriter(badge, `你是「${p.name}」型`, () => { badge.classList.add('show'); });
+    
+    document.getElementById('persona-desc').textContent = p.desc;
+    
+    // Store for recommendation
+    window.currentPersona = persona;
+    
+    // Confetti
+    spawnConfetti();
+    
+    // Show below fold
+    document.getElementById('below-fold').style.display = '';
+  }, 1500);
 }
 
-let radarChart;
-function renderRadar() {
-  const ctx = document.getElementById('radarChart').getContext('2d');
-  radarChart = new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: ['酸度','苦度','甜度','醇厚度','花果香'],
-      datasets: [{
-        label: '你的味觉档案',
-        data: [answers.acidity, answers.bitterness, answers.sweetness, answers.body, answers.fruity],
-        backgroundColor: 'rgba(139,94,60,0.15)',
-        borderColor: '#8B5E3C',
-        borderWidth: 2,
-        pointBackgroundColor: '#8B5E3C',
-        pointRadius: 5
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: { r: { beginAtZero:true, max:100, ticks:{display:false}, grid:{color:'rgba(139,94,60,0.1)'}, pointLabels:{font:{size:14}} } },
-      plugins: { legend:{display:false} },
-      animation: { duration: 800, easing: 'easeOutQuart' }
+function determinePersona() {
+  // Simple heuristic based on answers
+  const vals = answers.filter(a => typeof a === 'string');
+  if (vals.includes('adventurous') || vals.includes('surprise') || vals.includes('fruity')) return 'explorer';
+  if (vals.includes('familiar') || vals.includes('balanced') || vals.includes('smooth')) return 'ritualist';
+  if (vals.includes('body') || vals.includes('bold') || vals.includes('intense')) return 'sensualist';
+  return 'minimalist';
+}
+
+function drawRadar() {
+  const canvas = document.getElementById('radar-canvas');
+  const ctx = canvas.getContext('2d');
+  const cx = 140, cy = 140, r = 100;
+  const dims = ['酸度','甜感','醇厚','香气','余韵'];
+  const values = [0.3, 0.3, 0.3, 0.3, 0.3]; // start small
+  const targets = dims.map(() => 0.4 + Math.random() * 0.5);
+  
+  let progress = 0;
+  function animate() {
+    progress += 0.02;
+    if (progress > 1) progress = 1;
+    ctx.clearRect(0, 0, 280, 280);
+    
+    // Grid
+    for (let ring = 1; ring <= 4; ring++) {
+      ctx.beginPath();
+      for (let i = 0; i <= dims.length; i++) {
+        const angle = (Math.PI * 2 / dims.length) * i - Math.PI / 2;
+        const rr = r * ring / 4;
+        const x = cx + Math.cos(angle) * rr;
+        const y = cy + Math.sin(angle) * rr;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--glass-border');
+      ctx.stroke();
     }
+    
+    // Labels
+    ctx.font = '11px -apple-system, PingFang SC';
+    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-dim');
+    ctx.textAlign = 'center';
+    dims.forEach((d, i) => {
+      const angle = (Math.PI * 2 / dims.length) * i - Math.PI / 2;
+      const x = cx + Math.cos(angle) * (r + 18);
+      const y = cy + Math.sin(angle) * (r + 18);
+      ctx.fillText(d, x, y + 4);
+    });
+    
+    // Data polygon
+    ctx.beginPath();
+    dims.forEach((_, i) => {
+      const v = values[i] + (targets[i] - values[i]) * easeOut(progress);
+      const angle = (Math.PI * 2 / dims.length) * i - Math.PI / 2;
+      const x = cx + Math.cos(angle) * r * v;
+      const y = cy + Math.sin(angle) * r * v;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(139,94,60,0.2)';
+    ctx.fill();
+    ctx.strokeStyle = '#8B5E3C';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Dots
+    dims.forEach((_, i) => {
+      const v = values[i] + (targets[i] - values[i]) * easeOut(progress);
+      const angle = (Math.PI * 2 / dims.length) * i - Math.PI / 2;
+      const x = cx + Math.cos(angle) * r * v;
+      const y = cy + Math.sin(angle) * r * v;
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#8B5E3C'; ctx.fill();
+    });
+    
+    if (progress < 1) requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+function typewriter(el, text, cb) {
+  el.style.opacity = '1'; el.style.transform = 'scale(1)';
+  let i = 0;
+  el.textContent = '';
+  el.classList.add('show');
+  const interval = setInterval(() => {
+    el.textContent += text[i]; i++;
+    if (i >= text.length) { clearInterval(interval); cb && cb(); }
+  }, 80);
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('confetti-container');
+  const colors = ['#8B5E3C','#C4956A','#D4A574','#FFF8F0','#2C1810'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random() * 100 + '%';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.animationDelay = Math.random() * 1 + 's';
+    el.style.animationDuration = (2 + Math.random()) + 's';
+    container.appendChild(el);
+  }
+  setTimeout(() => { container.innerHTML = ''; }, 4000);
+}
+
+function showRecommend() {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('recommend').classList.add('active');
+  document.getElementById('recommend').style.display = 'flex';
+  
+  const p = personas[window.currentPersona || 'explorer'];
+  const b = p.beans;
+  document.getElementById('bean-card').innerHTML = `
+    <div class="origin">${b.origin}</div>
+    <h3>${b.name}</h3>
+    <div class="flavors">${b.flavors.map(f=>`<span class="flavor-tag">${f}</span>`).join('')}</div>
+    <div class="why">💡 为什么适合你：${b.why}</div>
+  `;
+}
+
+function shareResult() {
+  const p = personas[window.currentPersona || 'explorer'];
+  const text = `我是「${p.name}」型咖啡爱好者！☕ 来测测你的咖啡人格 →`;
+  if (navigator.share) { navigator.share({ title:'我的咖啡人格', text }); }
+  else { navigator.clipboard.writeText(text); alert('已复制到剪贴板！去分享给朋友吧 ☕'); }
+}
+
+// === Theme ===
+function toggleTheme() {
+  const body = document.body;
+  const theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+  body.dataset.theme = theme;
+  document.querySelector('.theme-toggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
+// === Particles ===
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize(); window.onresize = resize;
+for (let i = 0; i < 35; i++) pts.push({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.5+0.5, dx:(Math.random()-0.5)*0.2, dy:(Math.random()-0.5)*0.2, o:Math.random()*0.3+0.05 });
+function drawPts() {
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p => {
+    p.x += p.dx; p.y += p.dy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(139,94,60,${p.o})`; ctx.fill();
   });
+  requestAnimationFrame(drawPts);
 }
-
-function assignPersona() {
-  const dims = [answers.acidity,answers.bitterness,answers.sweetness,answers.body,answers.fruity];
-  const maxIdx = dims.indexOf(Math.max(...dims));
-  const personas = ['果酸探险家 🍋','深夜浓缩型 🌙','蜜糖甜心 🍯','醇厚主义者 🪵','花果精灵 🌸'];
-  document.getElementById('personaBadge').textContent = '你是：' + personas[maxIdx];
-}
-
-// Feedback
-function rateCoffee(score) {
-  document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.emoji-btn[data-score="'+score+'"]').classList.add('active');
-  // Simulate learning: the demo bean is fruity/acidic
-  const bean = {acidity:85, bitterness:20, sweetness:75, body:35, fruity:90};
-  const lr = 0.3;
-  const norm = (score-3)/2; // -1 to 1
-  ['acidity','bitterness','sweetness','body','fruity'].forEach(d=>{
-    answers[d] = Math.round(Math.min(100, Math.max(0, answers[d] + lr * norm * (bean[d] - answers[d]))));
-  });
-  localStorage.setItem('brewdj_profile', JSON.stringify(answers));
-  // Update chart
-  radarChart.data.datasets[0].data = [answers.acidity, answers.bitterness, answers.sweetness, answers.body, answers.fruity];
-  radarChart.update();
-  assignPersona();
-  const msgs = ['收到！档案已微调 📊','味觉档案已更新 📈','了解！下次帮你避开 🎯','太棒了！记住了 ✨','完美！给你找更多这类 🚀'];
-  document.getElementById('feedbackResult').textContent = msgs[score-1];
-}
-
-// Init
-renderQuestion();
-// Restore profile if exists
-(function(){
-  const saved = localStorage.getItem('brewdj_profile');
-  if(saved) { try { const p=JSON.parse(saved); Object.assign(answers,p); } catch(e){} }
-})();
+drawPts();
 </script>
 </body>
 </html>

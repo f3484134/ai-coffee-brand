@@ -14,7 +14,6 @@
   --peach: #F4A261;
   --mint: #7EC8B8;
   --green: #4CAF50;
-  --warn: #FF9800;
   --gray: #9E9E9E;
   --bg: var(--foam);
   --text: var(--espresso);
@@ -42,37 +41,40 @@ body {
   transition: background var(--transition), color var(--transition);
   overflow-x: hidden;
 }
-.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
 
 /* Theme Toggle */
 .theme-toggle {
-  position: fixed; top: 20px; right: 20px; z-index: 1000;
-  width: 44px; height: 44px; border-radius: 50%;
+  position: fixed; top: 16px; right: 16px; z-index: 1000;
+  width: 40px; height: 40px; border-radius: 50%;
   border: 2px solid var(--caramel); background: var(--card-bg);
   cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 20px; transition: all var(--transition);
+  font-size: 18px; transition: all var(--transition);
   box-shadow: 0 2px 12px var(--card-shadow);
 }
 .theme-toggle:hover { transform: scale(1.1); }
 
 /* Hero */
 .hero {
-  min-height: 100vh; display: flex; flex-direction: column;
+  min-height: 85vh; display: flex; flex-direction: column;
   align-items: center; justify-content: center; text-align: center;
-  padding: 80px 24px;
+  padding: 60px 20px;
   background: linear-gradient(180deg, var(--bg) 0%, var(--section-alt) 100%);
 }
-.hero-icon { font-size: 72px; margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hero-icon { font-size: 64px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 .hero h1 {
-  font-family: "Noto Serif SC", serif, -apple-system, sans-serif;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700; margin-bottom: 16px; color: var(--text);
+  font-size: 2rem; font-weight: 700; margin-bottom: 12px; color: var(--text);
+  line-height: 1.3;
 }
 .hero .subtitle {
-  font-size: clamp(1rem, 3vw, 1.25rem);
-  color: var(--caramel); margin-bottom: 40px; font-weight: 500;
+  font-size: 1.05rem; color: var(--caramel); margin-bottom: 32px; font-weight: 500;
 }
+.hero .hero-tagline {
+  font-size: 0.85rem; color: var(--gray); margin-top: 24px;
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+}
+.hero .hero-tagline span { display: flex; align-items: center; gap: 4px; }
 .btn-primary {
   display: inline-block; padding: 16px 40px;
   background: var(--caramel); color: #fff;
@@ -83,83 +85,78 @@ body {
   box-shadow: 0 4px 20px rgba(139,94,60,0.3);
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(139,94,60,0.4); }
+.btn-primary:active { transform: scale(0.97); }
 
 /* Sections */
-section { padding: 80px 24px; }
+section { padding: 60px 20px; }
 .section-title {
-  text-align: center; font-size: clamp(1.5rem, 4vw, 2.2rem);
-  font-weight: 700; margin-bottom: 48px;
+  text-align: center; font-size: 1.5rem;
+  font-weight: 700; margin-bottom: 32px;
 }
-
-/* How it Works */
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
-.step {
-  text-align: center; padding: 32px 24px;
-  background: var(--card-bg); border-radius: var(--radius);
-  box-shadow: 0 4px 24px var(--card-shadow);
-  transition: transform var(--transition);
-}
-.step:hover { transform: translateY(-4px); }
-.step-icon { font-size: 48px; margin-bottom: 16px; }
-.step-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
-.step-desc { font-size: 0.95rem; color: var(--gray); }
 
 /* Quiz Section */
-.quiz-section { background: var(--section-alt); border-radius: var(--radius); }
+.quiz-section { background: var(--section-alt); }
 .quiz-container {
-  max-width: 600px; margin: 0 auto;
+  max-width: 480px; margin: 0 auto;
   background: var(--card-bg); border-radius: var(--radius);
-  padding: 40px 32px; box-shadow: 0 8px 40px var(--card-shadow);
+  padding: 32px 20px; box-shadow: 0 8px 40px var(--card-shadow);
 }
 .quiz-progress {
-  height: 4px; background: #e0d5cc; border-radius: 2px; margin-bottom: 32px; overflow: hidden;
+  height: 4px; background: #e0d5cc; border-radius: 2px; margin-bottom: 28px; overflow: hidden;
 }
 .quiz-progress-bar {
   height: 100%; background: var(--caramel); border-radius: 2px;
   transition: width 0.4s ease;
 }
-.quiz-question { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; text-align: center; }
-.quiz-options { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.quiz-step-label {
+  text-align: center; font-size: 0.8rem; color: var(--gray); margin-bottom: 8px;
+}
+.quiz-question { font-size: 1.15rem; font-weight: 600; margin-bottom: 24px; text-align: center; }
+.quiz-options { display: flex; flex-direction: column; gap: 12px; }
 .quiz-option {
-  padding: 12px 24px; border: 2px solid #e0d5cc; border-radius: 50px;
-  cursor: pointer; transition: all var(--transition); font-size: 0.95rem;
-  background: var(--card-bg);
+  padding: 14px 20px; border: 2px solid #e0d5cc; border-radius: 12px;
+  cursor: pointer; transition: all 0.2s ease; font-size: 1rem;
+  background: var(--card-bg); text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
-.quiz-option:hover, .quiz-option.selected {
+.quiz-option:hover { border-color: var(--caramel); background: rgba(139,94,60,0.05); }
+.quiz-option.selected {
   border-color: var(--caramel); background: var(--caramel); color: #fff;
+  transform: scale(0.97);
 }
-.quiz-slider-wrap { text-align: center; }
+.quiz-slider-wrap { text-align: center; padding: 8px 0; }
 .quiz-slider {
-  width: 100%; max-width: 400px; margin: 16px auto;
+  width: 100%; margin: 16px auto;
   -webkit-appearance: none; height: 8px; border-radius: 4px;
   background: linear-gradient(to right, var(--mint), var(--peach));
   outline: none;
 }
 .quiz-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 24px; height: 24px;
+  -webkit-appearance: none; width: 28px; height: 28px;
   border-radius: 50%; background: var(--caramel); cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-.slider-labels { display: flex; justify-content: space-between; max-width: 400px; margin: 0 auto; font-size: 0.85rem; color: var(--gray); }
+.slider-labels { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--gray); }
 .quiz-nav { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
 .btn-secondary {
-  padding: 10px 28px; border: 2px solid var(--caramel); color: var(--caramel);
+  padding: 10px 24px; border: 2px solid var(--caramel); color: var(--caramel);
   background: transparent; border-radius: 50px; cursor: pointer;
   font-size: 0.95rem; transition: all var(--transition);
 }
 .btn-secondary:hover { background: var(--caramel); color: #fff; }
 .btn-small {
-  padding: 10px 28px; border: none; background: var(--caramel); color: #fff;
+  padding: 10px 24px; border: none; background: var(--caramel); color: #fff;
   border-radius: 50px; cursor: pointer; font-size: 0.95rem;
   transition: all var(--transition);
 }
-.btn-small:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-small:hover { opacity: 0.9; }
 
-/* Radar Chart */
+/* Radar Chart / Result */
 .radar-section { text-align: center; }
 .radar-wrap {
-  max-width: 400px; margin: 0 auto; background: var(--card-bg);
-  border-radius: var(--radius); padding: 32px;
+  max-width: 360px; margin: 0 auto; background: var(--card-bg);
+  border-radius: var(--radius); padding: 24px;
   box-shadow: 0 4px 24px var(--card-shadow);
 }
 .persona-badge {
@@ -167,27 +164,29 @@ section { padding: 80px 24px; }
   background: linear-gradient(135deg, var(--caramel), var(--peach));
   color: #fff; border-radius: 50px; font-weight: 600; font-size: 0.95rem;
 }
+.result-cta { margin-top: 24px; }
 
 /* Feedback Demo */
 .feedback-demo {
-  max-width: 500px; margin: 32px auto 0;
+  max-width: 480px; margin: 24px auto 0;
   background: var(--card-bg); border-radius: var(--radius);
-  padding: 24px; box-shadow: 0 4px 24px var(--card-shadow);
+  padding: 24px 20px; box-shadow: 0 4px 24px var(--card-shadow);
   text-align: center;
 }
 .feedback-title { font-size: 1rem; margin-bottom: 16px; font-weight: 500; }
-.emoji-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
+.emoji-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; }
 .emoji-btn {
-  font-size: 32px; cursor: pointer; transition: transform 0.2s;
+  font-size: 28px; cursor: pointer; transition: transform 0.2s;
   background: none; border: none; padding: 8px;
-  border-radius: 50%;
+  border-radius: 50%; -webkit-tap-highlight-color: transparent;
 }
 .emoji-btn:hover { transform: scale(1.3); }
 .emoji-btn.active { transform: scale(1.3); background: var(--section-alt); }
 .feedback-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
 .tag {
-  padding: 6px 16px; border: 1px solid #e0d5cc; border-radius: 50px;
+  padding: 6px 14px; border: 1px solid #e0d5cc; border-radius: 50px;
   font-size: 0.85rem; cursor: pointer; transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
 }
 .tag.active { border-color: var(--caramel); background: var(--caramel); color: #fff; }
 .feedback-result { font-size: 0.9rem; color: var(--green); min-height: 24px; font-weight: 500; }
@@ -196,95 +195,86 @@ section { padding: 80px 24px; }
 .pricing-card {
   max-width: 400px; margin: 0 auto; text-align: center;
   background: var(--card-bg); border-radius: var(--radius);
-  padding: 48px 32px; box-shadow: 0 8px 40px var(--card-shadow);
+  padding: 40px 24px; box-shadow: 0 8px 40px var(--card-shadow);
   border: 2px solid var(--caramel);
 }
-.pricing-amount { font-size: 3rem; font-weight: 700; color: var(--caramel); }
+.pricing-amount { font-size: 2.5rem; font-weight: 700; color: var(--caramel); }
 .pricing-unit { font-size: 1rem; color: var(--gray); }
 .pricing-features { list-style: none; margin: 24px 0; text-align: left; }
-.pricing-features li { padding: 8px 0; border-bottom: 1px solid #f0e8e0; }
+.pricing-features li { padding: 8px 0; border-bottom: 1px solid #f0e8e0; font-size: 0.95rem; }
 .pricing-features li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+
+/* Why Section (Features moved after action) */
+.why-section { background: var(--section-alt); }
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-card {
+  text-align: center; padding: 24px 16px;
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: 0 2px 12px var(--card-shadow);
+}
+.why-card .icon { font-size: 32px; margin-bottom: 8px; }
+.why-card .label { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+.why-card .desc { font-size: 0.8rem; color: var(--gray); }
 
 /* Footer */
 footer {
-  padding: 48px 24px; text-align: center;
-  background: var(--section-alt); border-top: 1px solid #e0d5cc;
+  padding: 40px 20px; text-align: center;
+  border-top: 1px solid #e0d5cc;
 }
-footer p { color: var(--gray); font-size: 0.9rem; margin-top: 8px; }
-.footer-brand { font-size: 1.2rem; font-weight: 700; color: var(--caramel); }
+footer p { color: var(--gray); font-size: 0.85rem; margin-top: 8px; }
+.footer-brand { font-size: 1.1rem; font-weight: 700; color: var(--caramel); }
 
 /* Hidden */
 .hidden { display: none !important; }
 
-/* Responsive */
-@media (max-width: 600px) {
-  section { padding: 60px 16px; }
-  .quiz-container { padding: 24px 16px; }
-  .radar-wrap { padding: 20px; }
-  .pricing-card { padding: 32px 20px; }
-  .emoji-btn { font-size: 28px; }
+/* Desktop */
+@media (min-width: 768px) {
+  .container { max-width: 600px; }
+  .hero h1 { font-size: 2.8rem; }
+  .why-grid { grid-template-columns: repeat(4, 1fr); }
 }
 </style>
 </head>
 <body>
 <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">🌙</button>
 
-<!-- Hero -->
+<!-- Hero: Single clear purpose -->
 <section class="hero">
   <div class="hero-icon">☕</div>
-  <h1>每一杯，都是你的味道</h1>
-  <p class="subtitle">AI 帮你调，你来打分 — 越喝越懂你</p>
-  <a href="#quiz" class="btn-primary">30秒找到你的口味 →</a>
-</section>
-
-<!-- How it Works -->
-<section>
-  <div class="container">
-    <h2 class="section-title">三步开启你的味觉旅程</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">📝</div>
-        <div class="step-title">告诉我们你的口味</div>
-        <div class="step-desc">30秒味觉小测试，不需要懂咖啡</div>
-      </div>
-      <div class="step">
-        <div class="step-icon">🎵</div>
-        <div class="step-title">调调帮你配</div>
-        <div class="step-desc">80% 安全区 + 20% 探索区，像 Spotify 越听越准</div>
-      </div>
-      <div class="step">
-        <div class="step-icon">😍</div>
-        <div class="step-title">喝完打个分</div>
-        <div class="step-desc">点个 emoji，15秒搞定，你的档案就在成长</div>
-      </div>
-    </div>
+  <h1>30秒，找到你的咖啡</h1>
+  <p class="subtitle">AI 味觉测试 → 个性化推荐 → 越喝越懂你</p>
+  <a href="#quiz" class="btn-primary">开始测试 →</a>
+  <div class="hero-tagline">
+    <span>🎯 不需要懂咖啡</span>
+    <span>⚡ 仅4题</span>
+    <span>🤖 AI 即时推荐</span>
   </div>
 </section>
 
-<!-- Quiz -->
+<!-- Quiz: Immediately after Hero, no interruption -->
 <section id="quiz" class="quiz-section">
   <div class="container">
-    <h2 class="section-title">找到你的味觉档案</h2>
+    <h2 class="section-title">味觉小测试</h2>
     <div class="quiz-container">
       <div class="quiz-progress"><div class="quiz-progress-bar" id="progressBar" style="width:25%"></div></div>
+      <div class="quiz-step-label" id="stepLabel">1 / 4</div>
       <div id="quizContent"></div>
-      <div class="quiz-nav">
-        <button class="btn-secondary hidden" id="prevBtn" onclick="prevQuestion()">上一题</button>
-        <button class="btn-small" id="nextBtn" onclick="nextQuestion()">下一题</button>
+      <div class="quiz-nav hidden" id="quizNav">
+        <button class="btn-secondary hidden" id="prevBtn" onclick="prevQuestion()">← 上一题</button>
+        <button class="btn-small hidden" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Radar Result -->
+<!-- Result: Radar + Persona + Feedback -->
 <section class="radar-section hidden" id="resultSection">
   <div class="container">
-    <h2 class="section-title">你的味觉档案</h2>
+    <h2 class="section-title">🎉 你的味觉档案</h2>
     <div class="radar-wrap">
       <canvas id="radarChart" width="300" height="300"></canvas>
       <div class="persona-badge" id="personaBadge"></div>
     </div>
-    <!-- Feedback Demo -->
     <div class="feedback-demo" id="feedbackDemo">
       <div class="feedback-title">☕ 试试反馈：给「耶加雪菲·果丁丁」打个分</div>
       <div class="emoji-row">
@@ -302,11 +292,14 @@ footer p { color: var(--gray); font-size: 0.9rem; margin-top: 8px; }
       </div>
       <div class="feedback-result" id="feedbackResult"></div>
     </div>
+    <div class="result-cta">
+      <a href="#pricing" class="btn-primary">订阅我的专属咖啡 →</a>
+    </div>
   </div>
 </section>
 
 <!-- Pricing -->
-<section>
+<section id="pricing">
   <div class="container">
     <h2 class="section-title">开始你的味觉订阅</h2>
     <div class="pricing-card">
@@ -323,11 +316,40 @@ footer p { color: var(--gray); font-size: 0.9rem; margin-top: 8px; }
   </div>
 </section>
 
+<!-- Why 调调 (Features as supporting info AFTER the action) -->
+<section class="why-section">
+  <div class="container">
+    <h2 class="section-title">为什么选调调？</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icon">🎵</div>
+        <div class="label">像 Spotify</div>
+        <div class="desc">越喝越准的推荐算法</div>
+      </div>
+      <div class="why-card">
+        <div class="icon">🫘</div>
+        <div class="label">精品豆源</div>
+        <div class="desc">产地直采新鲜烘焙</div>
+      </div>
+      <div class="why-card">
+        <div class="icon">📊</div>
+        <div class="label">味觉成长</div>
+        <div class="desc">每杯反馈都让档案更精准</div>
+      </div>
+      <div class="why-card">
+        <div class="icon">🔓</div>
+        <div class="label">无锁定</div>
+        <div class="desc">随时暂停随时退订</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer>
   <div class="footer-brand">调调 Brew DJ</div>
   <p>精品豆源 · 新鲜烘焙 · AI 个性化配方 · 随时可退订</p>
-  <p style="margin-top:16px;font-size:0.8rem;">© 2026 调调 Brew DJ — HKU ICB AIBT Steve 团队出品</p>
+  <p style="margin-top:12px;font-size:0.75rem;">© 2026 调调 Brew DJ — HKU ICB AIBT Steve 团队出品</p>
 </footer>
 
 <script>
@@ -344,64 +366,100 @@ function toggleTheme() {
   if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.querySelector('.theme-toggle').textContent='☀️'; }
 })();
 
-// Quiz
+// Quiz Data
 const questions = [
   { q: '你喜欢什么感觉？', type: 'choice', options: [{label:'☀️ 清爽明亮',v:{acidity:80,sweetness:60,fruity:70,bitterness:20,body:30}},{label:'🍫 醇厚温暖',v:{acidity:20,sweetness:50,fruity:20,bitterness:60,body:85}},{label:'🌸 层次丰富',v:{acidity:60,sweetness:70,fruity:80,bitterness:40,body:50}}] },
   { q: '酸度接受度？', type: 'slider', dim: 'acidity', min:'完全不要酸', max:'爱死果酸了' },
-  { q: '你的咖啡时刻？', type: 'multi', options: [{label:'早晨唤醒',v:{bitterness:10,body:10}},{label:'午后续命',v:{sweetness:10,body:5}},{label:'专注加持',v:{bitterness:5,acidity:5}},{label:'放松享受',v:{sweetness:10,fruity:10}}] },
-  { q: '冒险程度？', type: 'choice', options: [{label:'🛡️ 稳一点',v:{explorer:0}},{label:'🚀 带我探索',v:{explorer:1}}] }
+  { q: '你的咖啡时刻？（可多选）', type: 'multi', options: [{label:'☀️ 早晨唤醒',v:{bitterness:10,body:10}},{label:'⚡ 午后续命',v:{sweetness:10,body:5}},{label:'🧠 专注加持',v:{bitterness:5,acidity:5}},{label:'🌿 放松享受',v:{sweetness:10,fruity:10}}] },
+  { q: '冒险程度？', type: 'choice', options: [{label:'🛡️ 稳一点，给我喜欢的',v:{explorer:0}},{label:'🚀 带我探索新世界',v:{explorer:1}}] }
 ];
 let currentQ = 0;
 let answers = { acidity:50, bitterness:50, sweetness:50, body:50, fruity:50 };
 
+// Restore profile
+(function(){
+  const saved = localStorage.getItem('brewdj_profile');
+  if(saved) { try { Object.assign(answers, JSON.parse(saved)); } catch(e){} }
+})();
+
 function renderQuestion() {
   const q = questions[currentQ];
-  const progress = ((currentQ+1)/questions.length)*100;
-  document.getElementById('progressBar').style.width = progress+'%';
-  document.getElementById('prevBtn').classList.toggle('hidden', currentQ===0);
-  document.getElementById('nextBtn').textContent = currentQ===questions.length-1 ? '查看结果' : '下一题';
-  let html = '<div class="quiz-question">'+q.q+'</div>';
-  if (q.type==='choice') {
+  const total = questions.length;
+  const progress = ((currentQ + 1) / total) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('stepLabel').textContent = (currentQ + 1) + ' / ' + total;
+
+  let html = '<div class="quiz-question">' + q.q + '</div>';
+  if (q.type === 'choice') {
     html += '<div class="quiz-options">';
-    q.options.forEach((o,i)=>{ html += '<div class="quiz-option" data-idx="'+i+'" onclick="selectOption(this,'+currentQ+','+i+')">'+o.label+'</div>'; });
+    q.options.forEach((o, i) => {
+      html += '<div class="quiz-option" data-idx="' + i + '" onclick="selectOption(this,' + currentQ + ',' + i + ')">' + o.label + '</div>';
+    });
     html += '</div>';
-  } else if (q.type==='slider') {
-    html += '<div class="quiz-slider-wrap"><input type="range" class="quiz-slider" id="sliderInput" min="0" max="100" value="'+answers[q.dim]+'"><div class="slider-labels"><span>'+q.min+'</span><span>'+q.max+'</span></div></div>';
-  } else if (q.type==='multi') {
+  } else if (q.type === 'slider') {
+    html += '<div class="quiz-slider-wrap"><input type="range" class="quiz-slider" id="sliderInput" min="0" max="100" value="' + answers[q.dim] + '"><div class="slider-labels"><span>' + q.min + '</span><span>' + q.max + '</span></div></div>';
+  } else if (q.type === 'multi') {
     html += '<div class="quiz-options">';
-    q.options.forEach((o,i)=>{ html += '<div class="quiz-option" data-idx="'+i+'" onclick="toggleMulti(this,'+currentQ+','+i+')">'+o.label+'</div>'; });
+    q.options.forEach((o, i) => {
+      html += '<div class="quiz-option" data-idx="' + i + '" onclick="toggleMulti(this,' + currentQ + ',' + i + ')">' + o.label + '</div>';
+    });
     html += '</div>';
   }
   document.getElementById('quizContent').innerHTML = html;
+
+  // Show nav only for slider and multi types (need explicit advance)
+  const nav = document.getElementById('quizNav');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  if (q.type === 'slider' || q.type === 'multi') {
+    nav.classList.remove('hidden');
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = currentQ === total - 1 ? '查看结果 🎉' : '下一题 →';
+  } else {
+    // choice type: auto-advance, hide next button
+    nav.classList.remove('hidden');
+    nextBtn.classList.add('hidden');
+  }
+  prevBtn.classList.toggle('hidden', currentQ === 0);
 }
 
+// Auto-advance for single-choice: select → 0.3s delay → next
 function selectOption(el, qi, idx) {
-  document.querySelectorAll('.quiz-option').forEach(e=>e.classList.remove('selected'));
+  document.querySelectorAll('.quiz-option').forEach(e => e.classList.remove('selected'));
   el.classList.add('selected');
   const v = questions[qi].options[idx].v;
-  Object.keys(v).forEach(k=>{ if(k!=='explorer') answers[k]=v[k]; });
+  Object.keys(v).forEach(k => { if (k !== 'explorer') answers[k] = v[k]; });
+
+  // Auto-advance after 300ms
+  setTimeout(() => {
+    if (currentQ < questions.length - 1) { currentQ++; renderQuestion(); }
+    else showResult();
+  }, 300);
 }
+
 function toggleMulti(el, qi, idx) {
   el.classList.toggle('selected');
   const v = questions[qi].options[idx].v;
-  if(el.classList.contains('selected')) Object.keys(v).forEach(k=>{ answers[k]=Math.min(100,answers[k]+v[k]); });
-  else Object.keys(v).forEach(k=>{ answers[k]=Math.max(0,answers[k]-v[k]); });
+  if (el.classList.contains('selected')) Object.keys(v).forEach(k => { answers[k] = Math.min(100, answers[k] + v[k]); });
+  else Object.keys(v).forEach(k => { answers[k] = Math.max(0, answers[k] - v[k]); });
 }
+
 function nextQuestion() {
-  if (questions[currentQ].type==='slider') {
+  if (questions[currentQ].type === 'slider') {
     const s = document.getElementById('sliderInput');
-    if(s) answers[questions[currentQ].dim] = parseInt(s.value);
+    if (s) answers[questions[currentQ].dim] = parseInt(s.value);
   }
-  if (currentQ < questions.length-1) { currentQ++; renderQuestion(); }
+  if (currentQ < questions.length - 1) { currentQ++; renderQuestion(); }
   else showResult();
 }
-function prevQuestion() { if(currentQ>0){currentQ--;renderQuestion();} }
+function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
 
 function showResult() {
   localStorage.setItem('brewdj_profile', JSON.stringify(answers));
   document.getElementById('quiz').classList.add('hidden');
   document.getElementById('resultSection').classList.remove('hidden');
-  document.getElementById('resultSection').scrollIntoView({behavior:'smooth'});
+  document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
   renderRadar();
   assignPersona();
 }
@@ -412,7 +470,7 @@ function renderRadar() {
   radarChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: ['酸度','苦度','甜度','醇厚度','花果香'],
+      labels: ['酸度', '苦度', '甜度', '醇厚度', '花果香'],
       datasets: [{
         label: '你的味觉档案',
         data: [answers.acidity, answers.bitterness, answers.sweetness, answers.body, answers.fruity],
@@ -425,47 +483,40 @@ function renderRadar() {
     },
     options: {
       responsive: true,
-      scales: { r: { beginAtZero:true, max:100, ticks:{display:false}, grid:{color:'rgba(139,94,60,0.1)'}, pointLabels:{font:{size:14}} } },
-      plugins: { legend:{display:false} },
+      scales: { r: { beginAtZero: true, max: 100, ticks: { display: false }, grid: { color: 'rgba(139,94,60,0.1)' }, pointLabels: { font: { size: 13 } } } },
+      plugins: { legend: { display: false } },
       animation: { duration: 800, easing: 'easeOutQuart' }
     }
   });
 }
 
 function assignPersona() {
-  const dims = [answers.acidity,answers.bitterness,answers.sweetness,answers.body,answers.fruity];
+  const dims = [answers.acidity, answers.bitterness, answers.sweetness, answers.body, answers.fruity];
   const maxIdx = dims.indexOf(Math.max(...dims));
-  const personas = ['果酸探险家 🍋','深夜浓缩型 🌙','蜜糖甜心 🍯','醇厚主义者 🪵','花果精灵 🌸'];
+  const personas = ['果酸探险家 🍋', '深夜浓缩型 🌙', '蜜糖甜心 🍯', '醇厚主义者 🪵', '花果精灵 🌸'];
   document.getElementById('personaBadge').textContent = '你是：' + personas[maxIdx];
 }
 
 // Feedback
 function rateCoffee(score) {
-  document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.emoji-btn[data-score="'+score+'"]').classList.add('active');
-  // Simulate learning: the demo bean is fruity/acidic
-  const bean = {acidity:85, bitterness:20, sweetness:75, body:35, fruity:90};
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.emoji-btn[data-score="' + score + '"]').classList.add('active');
+  const bean = { acidity: 85, bitterness: 20, sweetness: 75, body: 35, fruity: 90 };
   const lr = 0.3;
-  const norm = (score-3)/2; // -1 to 1
-  ['acidity','bitterness','sweetness','body','fruity'].forEach(d=>{
+  const norm = (score - 3) / 2;
+  ['acidity', 'bitterness', 'sweetness', 'body', 'fruity'].forEach(d => {
     answers[d] = Math.round(Math.min(100, Math.max(0, answers[d] + lr * norm * (bean[d] - answers[d]))));
   });
   localStorage.setItem('brewdj_profile', JSON.stringify(answers));
-  // Update chart
   radarChart.data.datasets[0].data = [answers.acidity, answers.bitterness, answers.sweetness, answers.body, answers.fruity];
   radarChart.update();
   assignPersona();
-  const msgs = ['收到！档案已微调 📊','味觉档案已更新 📈','了解！下次帮你避开 🎯','太棒了！记住了 ✨','完美！给你找更多这类 🚀'];
-  document.getElementById('feedbackResult').textContent = msgs[score-1];
+  const msgs = ['收到！档案已微调 📊', '味觉档案已更新 📈', '了解！下次帮你避开 🎯', '太棒了！记住了 ✨', '完美！给你找更多这类 🚀'];
+  document.getElementById('feedbackResult').textContent = msgs[score - 1];
 }
 
 // Init
 renderQuestion();
-// Restore profile if exists
-(function(){
-  const saved = localStorage.getItem('brewdj_profile');
-  if(saved) { try { const p=JSON.parse(saved); Object.assign(answers,p); } catch(e){} }
-})();
 </script>
 </body>
 </html>

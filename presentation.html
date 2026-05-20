@@ -213,6 +213,7 @@ ul li::before { content: "→ "; color: var(--accent); }
 <div class="glass">
 <h2>🗺️ 服务蓝图</h2>
 <p style="margin-bottom:12px;">完整用户旅程：从发现到忠诚</p>
+<img src="./service-blueprint.png" alt="服务蓝图" style="width:100%;max-width:800px;border-radius:12px;margin-top:16px;">
 <div class="blueprint">┌──────────── LANDING PAGE ────────────┐
 │ [发现] 社媒/广告 → 打开页面          │
 │ [兴趣] 一屏看懂 + CTA               │
@@ -439,6 +440,25 @@ function drawParticles(){
     p.x+=p.dx; p.y+=p.dy;
     if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
     ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(201,169,110,${p.o})`; ctx.fill();
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+</script>
+</body>
+</html>
+p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(201,169,110,${p.o})`; ctx.fill();
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+</script>
+</body>
+</html>
+ath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
     ctx.fillStyle=`rgba(201,169,110,${p.o})`; ctx.fill();
   });
   requestAnimationFrame(drawParticles);
